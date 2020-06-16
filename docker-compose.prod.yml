@@ -6,6 +6,6 @@ services:
     container_name: frontend-prod
     build:
       context: .
-      dockerfile: docker/front/Dockerfile.prod
+      dockerfile: docker/ui/Dockerfile.prod
     ports:
       - '1337:80'

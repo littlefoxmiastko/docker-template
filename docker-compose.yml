@@ -22,7 +22,7 @@ services:
       container_name: shop-front-webserver
       build:
           context: .
-          dockerfile: docker/front/Dockerfile
+          dockerfile: docker/ui/Dockerfile
       volumes:
           - './ui:/app'
           - '/app/node_modules'
