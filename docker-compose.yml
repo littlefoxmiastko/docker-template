@@ -3,7 +3,7 @@ services:
 
     mysql:
       image: mysql:8.0
-      container_name: shop-mysql
+      container_name: tms-mysql
       working_dir: /application
       volumes:
         - .:/application
@@ -19,7 +19,7 @@ services:
         
     frontend:
       stdin_open: true
-      container_name: shop-front-webserver
+      container_name: tms-ui
       build:
           context: .
           dockerfile: docker/ui/Dockerfile
@@ -35,7 +35,7 @@ services:
        
     backend-nginx:
       image: nginx:alpine
-      container_name: shop-api-webserver
+      container_name: tms-api-web
       working_dir: /application
       volumes:
           - ./api:/application
@@ -47,14 +47,16 @@ services:
       
     php-fpm:
       build: docker/php-fpm
-      container_name: shop-php-fpm
+      container_name: tms-api-php
       working_dir: /application
       volumes:
-        - .:/application
+        - ./api:/application
         - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+        - ./docker/php-fpm/www.conf:/etc/php/7.4/fpm/pool.d/www.conf
       networks:
-        - isolated       
-
+        - isolated
+      environment:
+        XDEBUG_CONFIG: "remote_host=${localIp}"
 networks:
   isolated:
     external:
